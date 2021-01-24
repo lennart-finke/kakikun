@@ -1,0 +1,15 @@
+[package]
+name = "kakikun"
+version = "0.1.0"
+authors = ["fi-le <42694673+file-acomplaint@users.noreply.github.com>"]
+edition = "2018"
+
+[dependencies]
+regex = "1"
+image = "0.23.12"
+
+
+[dependencies.cursive]
+version = "0.15"
+default-features = false
+features = ["termion-backend"]
