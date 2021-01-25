@@ -11,6 +11,7 @@ use regex::Regex;
 use cursive::views::{Button, Dialog, LinearLayout, Panel, EditView, ListView, TextView, SliderView, ViewRef};
 use cursive::theme::{BorderStyle, Color, Theme, Palette, PaletteColor::*};
 use cursive::traits::*;
+use cursive::event::Event;
 use cursive::traits::Identifiable;
 use cursive::Cursive;
 use cursive::Vec2;
@@ -241,8 +242,8 @@ fn interpret_command (s: &mut Cursive, name: &str) {
                                     ListView::new()
                                         .child("\t", TextView::new("Some general commands to try:"))
                                         .child("\t", TextView::new(""))
-                                        .child("back", TextView::new("Undoes one step of painting. Kakikun will at most remember 250 actions."))
-                                        .child("pipette", TextView::new("Lets you pick colours and symbols from the canvas. Reverts to brush automatically."))
+                                        .child("back    | Ctrl+Z", TextView::new("Undoes one step of painting. Kakikun will at most remember 250 actions."))
+                                        .child("pipette | Ctrl+P", TextView::new("Lets you pick colours and symbols from the canvas. Reverts to brush automatically."))
                                         .child("clear", TextView::new("Clears the canvas to white background."))
                                         .child("fill all", TextView::new("Fills the whole of the canvas with the current brush setting."))
                                         .child("save", TextView::new("Saves the background colours in image format, the characters as text or everything as a kakikun project."))
@@ -266,7 +267,7 @@ fn interpret_command (s: &mut Cursive, name: &str) {
                                     ListView::new()
                                         .child("\t", TextView::new("These little tricks will only affect the background colours:"))
                                         .child("\t", TextView::new(""))
-                                        .child("flip", TextView::new("Flips the canvas. Examples: flip, flip -v"))
+                                        .child("flip | Ctrl+F", TextView::new("Flips the canvas. Examples: flip, flip -v"))
                                         .child("blur", TextView::new("Blurs the canvas."))
                                         .child("grayscale", TextView::new("Converts to greyscale."))
                                         .child("brighten", TextView::new("Brightens up everything. :)"))
@@ -389,9 +390,12 @@ fn theme_default(siv: &mut Cursive) {
 fn new_canvas(siv: &mut Cursive, size: Vec2) {
     // This is where we set up the layout of the main painting. A current issue is that altough canvas size may change over this layers' lifetime, the palette et cetera stay the same.
     let _board = canvas::Board::new(size);
-
     let picker_height = ((size.y as i32 + 25) / 2) - ((size.y as i32 - 25).abs() / 2); // This is just a fancy way to get the minimum of 25 and size.y
 
+    // Let's add some fun keybindings
+    siv.add_global_callback(Event::CtrlChar('z'), |s| {s.call_on_name("canvas", |view: &mut canvas::CanvasView| {view.back()});});
+    siv.add_global_callback(Event::CtrlChar('p'), |s| {s.call_on_name("canvas", |view: &mut canvas::CanvasView| {view.set_tool(canvas::Tool::Pipette)});});
+    siv.add_global_callback(Event::CtrlChar('f'), |s| {s.call_on_name("canvas", |view: &mut canvas::CanvasView| {view.fliph()});});
     siv.add_layer(
         Dialog::new()
             .title("kakikun - 描きくん")
