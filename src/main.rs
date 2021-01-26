@@ -102,8 +102,8 @@ fn show_credits(siv: &mut Cursive) {
             .child(TextView::new("\n\n\n"))
             .child(TextView::new("描きくん is open source, written in the Rust programming langauge and prominently uses the Text User Interface library Cursive."))
             .child(TextView::new("If you encounter any problems, you can share them at github.com/file-acomplaint/kakikun"))
-            .child(TextView::new("or send me, fi-le, some mail. The address is: ")) // TODO add email
-            .child(TextView::new("(Drawings and ASCII art created in kakikun is also appreciated.)")) // TODO add email
+            .child(TextView::new("or send me, fi-le, some mail. The address is info@fi-le.net"))
+            .child(TextView::new("(Drawings and ASCII art created in kakikun is also appreciated.)"))
             .child(TextView::new("\n"))
             .child(TextView::new(" v 0.1.0 - MIT License"))
         )
