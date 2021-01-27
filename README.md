@@ -13,7 +13,7 @@ Kakikun is written in Rust and a mischievous child of the TUI (Text User Interfa
 
 ## Compatibility
 Kakikun is *close* to being cross-plattform. The best experience is currently had on UNIX systems, but it does run on Windows as well. If there are any MacOS or Redox users in the audience tonight: You have been chosen as a beta tester just now, congrats!
-The issue comes down to finding a ![cursive backend](https://github.com/gyscos/cursive/wiki/Backends) that supports kakikun's features and runs OK on your system, which shouldn't be that difficult. The UNIX and Windows versions use termion and crossterm backend respectively.
+The issue comes down to finding a ![cursive backend](https://github.com/gyscos/cursive/wiki/Backends) that supports kakikun's features and runs OK on your system, which shouldn't be that difficult. The UNIX and Windows versions use crossterm.
 
 ![screenshot](https://github.com/file-acomplaint/file-acomplaint/blob/main/assets/screenshot3.png?raw=true)
 
