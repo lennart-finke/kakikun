@@ -340,8 +340,8 @@ impl CanvasView {
             let back_col = cell.backcolor;
             let col = cell.color;
             match (col, back_col) {
-                (Color::Rgb(r, g, b), Color::Rgb(R, G, B)) => {
-                    text = text + &format!("{:0>3}{:0>3}{:0>3}|{:0>3}{:0>3}{:0>3}|{}\t", r,g,b,R,G,B,cell.symbol)[..];
+                (Color::Rgb(r, g, b), Color::Rgb(r2, g2, b2)) => {
+                    text = text + &format!("{:0>3}{:0>3}{:0>3}|{:0>3}{:0>3}{:0>3}|{}\t", r,g,b,r2,g2,b2,cell.symbol)[..];
                 }
                 _ => continue
             }
@@ -365,12 +365,12 @@ impl CanvasView {
                 let c: Vec<char> = cs[i+1].to_string().chars().collect();
                 // the following is written so badly it's almost comical, sorry. Iterating over unicode strings is so hard :(
                 let (r, g, b) = (c[0..3].iter().collect::<String>().parse::<u8>().unwrap(), c[3..6].iter().collect::<String>().parse::<u8>().unwrap(), c[6..9].iter().collect::<String>().parse::<u8>().unwrap());
-                let (R,G,B) = (c[10..13].iter().collect::<String>().parse::<u8>().unwrap(), c[13..16].iter().collect::<String>().parse::<u8>().unwrap(), c[16..19].iter().collect::<String>().parse::<u8>().unwrap());
+                let (r2,g2,b2) = (c[10..13].iter().collect::<String>().parse::<u8>().unwrap(), c[13..16].iter().collect::<String>().parse::<u8>().unwrap(), c[16..19].iter().collect::<String>().parse::<u8>().unwrap());
                 let s = c[20].to_string().parse::<char>().unwrap_or(' ');
 
 
 
-                overlay_new[i] = Cell {color: Color::Rgb(r, g, b), backcolor: Color::Rgb(R,G,B), symbol: s};
+                overlay_new[i] = Cell {color: Color::Rgb(r, g, b), backcolor: Color::Rgb(r2,g2,b2), symbol: s};
             }
             self.overlay = overlay_new;
 
@@ -497,9 +497,7 @@ impl cursive::view::View for CanvasView {
             },
 
             Event::Mouse {
-                offset,
-                position,
-                event: MouseEvent::Release(_btn),
+                event: MouseEvent::Release(_btn), ..
             } => {
                 self.add_history();
             }
