@@ -5,6 +5,7 @@
 mod canvas;
 
 use std::fs;
+use std::env;
 use regex::Regex;
 
 
@@ -15,11 +16,24 @@ use cursive::event::Event;
 use cursive::traits::Identifiable;
 use cursive::Cursive;
 use cursive::Vec2;
-// use cursive::backends;
+use cursive::backends;
 
 
-fn main() {
-    let mut siv = cursive::default(); // This is different under Windows, where we need a buffered backend.
+fn main() { 
+    let mut siv = Cursive::new(|| {
+        if cfg!(windows) {
+            let crossterm_backend = backends::crossterm::Backend::init().unwrap();
+            let buffered_backend = cursive_buffered_backend::BufferedBackend::new(crossterm_backend);
+            Box::new(buffered_backend)
+        }
+        else {
+            let termion_backend = backends::termion::Backend::init().unwrap();
+            let buffered_backend = cursive_buffered_backend::BufferedBackend::new(termion_backend);
+            Box::new(buffered_backend)
+        }
+    });
+
+
 
     theme_light(&mut siv);
 
@@ -29,8 +43,8 @@ fn main() {
             .padding_lrtb(2, 2, 1, 1)
             .content(
                 LinearLayout::vertical()
-                    .child(Button::new_raw("  New Canvas   ", show_options)) //|mut siv| {new_game(&mut siv, canvas::Options {size: Vec2::new(64, 16), })})
-                    .child(Button::new_raw("  Credits    ", show_credits))
+                    .child(Button::new_raw("  New Canvas   ", show_options))
+                    .child(Button::new_raw("  Credits   ", show_credits))
                     .child(Button::new_raw("    Exit     ", |s| s.quit())),
             ),
     );
@@ -102,7 +116,7 @@ fn show_credits(siv: &mut Cursive) {
             .child(TextView::new("\n\n\n"))
             .child(TextView::new("描きくん is open source, written in the Rust programming langauge and prominently uses the Text User Interface library Cursive."))
             .child(TextView::new("If you encounter any problems, you can share them at github.com/file-acomplaint/kakikun"))
-            .child(TextView::new("or send me, fi-le, some mail. The address is info@fi-le.net"))
+            .child(TextView::new("or send me, fi-le, some mail. The address is: info at file.net"))
             .child(TextView::new("(Drawings and ASCII art created in kakikun is also appreciated.)"))
             .child(TextView::new("\n"))
             .child(TextView::new(" v 0.1.0 - MIT License"))
@@ -133,7 +147,10 @@ fn interpret_command (s: &mut Cursive, name: &str) {
 
         s.call_on_name("canvas", |view: &mut canvas::CanvasView| {
             let text = view.totext();
-            let result = fs::write(&filename, text);
+
+            let mut path = env::current_dir().unwrap();
+            path.push(&filename);
+            let result = fs::write(path, text);
             match result {
                 Ok(_i) => success = true,
                 Err(_e) => {},
@@ -151,7 +168,9 @@ fn interpret_command (s: &mut Cursive, name: &str) {
         s.call_on_name("canvas", |view: &mut canvas::CanvasView| {
             let img = view.toimage();
 
-            let result = img.save(&filename);
+            let mut path = env::current_dir().unwrap();
+            path.push(&filename);
+            let result = img.save(path);
             match result {
                 Ok(_i) => success = true,
                 Err(_e) => {},
@@ -170,7 +189,9 @@ fn interpret_command (s: &mut Cursive, name: &str) {
         s.call_on_name("canvas", |view: &mut canvas::CanvasView| {
             let text = view.tofile();
 
-            let result = fs::write(&filename, text);
+            let mut path = env::current_dir().unwrap();
+            path.push(&filename);
+            let result = fs::write(path, text);
             match result {
                 Ok(_i) => success = true,
                 Err(_e) => {},
@@ -184,7 +205,9 @@ fn interpret_command (s: &mut Cursive, name: &str) {
     else if re_load_image.is_match(name) {
         let filename = get_filename(name.to_string());
 
-        let img = image::open(&filename);
+        let mut path = env::current_dir().unwrap();
+        path.push(&filename);
+        let img = image::open(path);
         match img {
             Ok(i) => {s.call_on_name("canvas", |view: &mut canvas::CanvasView| {view.fromimage(i, None);});
                       give_feedback(s, format!("Loaded {}.", filename))}
@@ -198,7 +221,10 @@ fn interpret_command (s: &mut Cursive, name: &str) {
         let mut i = 1;
         for n in name.split_whitespace() {
             if i == 2 {
-                let text = fs::read_to_string(&filename);
+                let mut path = env::current_dir().unwrap();
+                path.push(&filename);
+
+                let text = fs::read_to_string(path);
                 match text {
                     Ok(i) => {s.call_on_name("canvas", |view: &mut canvas::CanvasView| {view.fromfile(i);});
                               give_feedback(s, format!("Loaded {}.", n))}
@@ -305,8 +331,10 @@ fn interpret_command (s: &mut Cursive, name: &str) {
         "decontrast" => {s.call_on_name("canvas", |view: &mut canvas::CanvasView| {view.adjust_contrast(-0.2)});},
         "pipette" => {s.call_on_name("canvas", |view: &mut canvas::CanvasView| {view.set_tool(canvas::Tool::Pipette)});},
         "back" => {s.call_on_name("canvas", |view: &mut canvas::CanvasView| {view.back()});},
-        "sargent" => {s.call_on_name("canvas", |view: &mut canvas::CanvasView| {view.fromfile(fs::read_to_string(&"assets/sargent.kkun").unwrap());});}
-        "fi-le" => {s.call_on_name("canvas", |view: &mut canvas::CanvasView| {view.fromfile(fs::read_to_string(&"assets/fi-le.kkun").unwrap());});}
+        "sargent" => {s.call_on_name("canvas", |view: &mut canvas::CanvasView| {let sargent = include_bytes!("assets/sargent.kkun");
+                                                                                view.fromfile(String::from_utf8_lossy(sargent).to_string());});}
+        "fi-le" => {s.call_on_name("canvas", |view: &mut canvas::CanvasView| {let file = include_bytes!("assets/file.kkun");
+                                                                                view.fromfile(String::from_utf8_lossy(file).to_string());});}
         "width" => {let mut canvas: ViewRef<canvas::CanvasView> = s.find_name("canvas").unwrap();
                     let width: u32 = canvas.get_width();
 
@@ -355,8 +383,6 @@ fn get_filename(input: String) -> String {
 }
 
 fn theme_light(siv: &mut Cursive) {
-    // I'd like to do these with a theme file, but the compiler can't seem to find the functions used on cursive's example page.
-
     let mut palette = Palette::default();
     palette[Background] = Color::Rgb(191,171,150);
     palette[Primary] = Color::Rgb(28, 15, 3);
