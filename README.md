@@ -12,8 +12,8 @@ Kakikun lets you draw to your terminal like a canvas. You can use any character 
 Kakikun is written in Rust and a mischievous child of the TUI (Text User Interface) library ![cursive](https://github.com/gyscos/cursive). Another star of the show is the Rust image processing library. Thanks lots! 
 
 ## Compatibility
-Kakikun is *close* to being cross-plattform. The best experience is currently had on UNIX systems, but it does run on Windows as well. If there are any MacOS or Redox users in the audience tonight: You have been chosen as a beta tester just now, congrats!
-The issue comes down to finding a ![cursive backend](https://github.com/gyscos/cursive/wiki/Backends) that supports kakikun's features and runs OK on your system, which shouldn't be that difficult. The UNIX and Windows versions use crossterm.
+Kakikun is *close* to being cross-plattform. I personally can only test for Archlinux and Windows, of which the former does a lot better. If there are any MacOS, Redox or other Unix users in the audience tonight: You have been chosen as a beta tester just now, congrats!
+The issue comes down to finding a ![cursive backend](https://github.com/gyscos/cursive/wiki/Backends) that supports kakikun's features and runs OK on your system, which shouldn't be that difficult. My best guess is to use crossterm backend for Windows and termion for everything else.
 
 ![screenshot](https://github.com/file-acomplaint/file-acomplaint/blob/main/assets/screenshot3.png?raw=true)
 
