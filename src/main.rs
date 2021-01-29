@@ -17,20 +17,25 @@ use cursive::traits::Identifiable;
 use cursive::Cursive;
 use cursive::Vec2;
 use cursive::backends;
+use cursive_buffered_backend::BufferedBackend;
 
+#[cfg(target_os = "windows")]
+fn backend() -> Box<BufferedBackend> {
+    let crossterm_backend = backends::crossterm::Backend::init().unwrap();
+    let buffered_backend = cursive_buffered_backend::BufferedBackend::new(crossterm_backend);
+    Box::new(buffered_backend)
+}
 
-fn main() { 
+#[cfg(not(target_os = "windows"))]
+fn backend() -> Box<BufferedBackend> {
+    let termion_backend = backends::termion::Backend::init().unwrap();
+    let buffered_backend = cursive_buffered_backend::BufferedBackend::new(termion_backend);
+    Box::new(buffered_backend)
+}
+
+fn main() {
     let mut siv = Cursive::new(|| {
-        if cfg!(windows) {
-            let crossterm_backend = backends::crossterm::Backend::init().unwrap();
-            let buffered_backend = cursive_buffered_backend::BufferedBackend::new(crossterm_backend);
-            Box::new(buffered_backend)
-        }
-        else {
-            let termion_backend = backends::termion::Backend::init().unwrap();
-            let buffered_backend = cursive_buffered_backend::BufferedBackend::new(termion_backend);
-            Box::new(buffered_backend)
-        }
+        backend()
     });
 
 
