@@ -15,4 +15,7 @@ regex = "1"
 [dependencies.cursive]
 version = "0.15"
 default-features = false
-features = ["crossterm-backend"]
+
+[features]
+default = ["cursive/termion-backend"]
+windows = ["cursive/crossterm-backend"]
