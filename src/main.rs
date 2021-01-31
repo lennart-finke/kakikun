@@ -14,7 +14,7 @@ use cursive::theme::{BorderStyle, Color, Theme, Palette, PaletteColor::*};
 use cursive::traits::*;
 use cursive::event::Event;
 use cursive::traits::Identifiable;
-use cursive::Cursive;
+use cursive_core::Cursive;
 use cursive::Vec2;
 use cursive::backends;
 use cursive_buffered_backend::BufferedBackend;
@@ -34,11 +34,7 @@ fn backend() -> Box<BufferedBackend> {
 }
 
 fn main() {
-    let mut siv = Cursive::new(|| {
-        backend()
-    });
-
-
+    let mut siv = Cursive::new();
 
     theme_light(&mut siv);
 
@@ -54,7 +50,7 @@ fn main() {
             ),
     );
 
-    siv.run();
+    siv.run_with(|| {backend()});
 }
 
 fn show_options(siv: &mut Cursive) {
