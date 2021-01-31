@@ -1,17 +1,20 @@
 [package]
 name = "kakikun"
 version = "0.1.0"
-authors = ["file-acomplaint <42694673+file-acomplaint@users.noreply.github.com>"]
+authors = ["fi-le <info@fi-le.net>"]
 edition = "2018"
+description = "A tool to draw in the console with text and colour."
+repository = "https://github.com/file-acomplaint/kakikun"
+homepage = "https://fi-le.net/programming#kakikun"
+license = "MIT"
+keywords = ["TUI", "image", "art", "graphics"]
+categories = ["command-line-utilities", "multimedia::images", "graphics"]
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 cursive_buffered_backend = { git = "https://github.com/gyscos/cursive_buffered_backend" }
 image = "0.23.12"
 regex = "1"
-cursive_core = "0.2.2"
-
 
 [dependencies.cursive]
 version = "0.16"
