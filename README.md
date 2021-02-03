@@ -1,4 +1,5 @@
 # 描きくん - kakikun
+[![AUR](https://img.shields.io/aur/version/kakikun?color=green)](https://aur.archlinux.org/packages/kakikun/)
 
 Kakikun is a tool to paint, draw and create ASCII art in your terminal. (The twist is that it's really unicode art.)
 
@@ -10,7 +11,7 @@ Kakikun lets you draw to your terminal like a canvas. You can use any character 
 ![screenshot](https://github.com/file-acomplaint/file-acomplaint/blob/main/assets/screenshot2.png?raw=true)
 
 ## Installation
-The easiest way to try it out is downloading a binary - either for ![Linux](https://github.com/file-acomplaint/kakikun/releases/download/v0.1.0/kakikun.exe) or ![Windows](https://github.com/file-acomplaint/kakikun/releases/download/v0.1.0/kakikun.exe) - and running that in your terminal.
+The easiest way to try it out is downloading a binary - either for ![Linux](https://github.com/file-acomplaint/kakikun/releases/download/v0.1.0/kakikun.exe) or ![Windows](https://github.com/file-acomplaint/kakikun/releases/download/v0.1.0/kakikun.exe) - and running that in your terminal. If you use Arch - by the way - you are lucky and can install comfortably from the ![AUR](https://aur.archlinux.org/packages/kakikun/).
 
 If you want to build it yourself, you can run:
 ```bash
@@ -25,7 +26,7 @@ git clone https://github.com/file-acomplaint/kakikun.git
 cd kakikun
 cargo run --release --no-default-features --features windows
 ```
-And then you can move target/release/kakikun where you want. I'm trying very hard to properly package this, too, of course.
+And then you can move target/release/kakikun where you want. If you'd like some other installation medium, tell me and I'll do my best :)
 
 ## Heritage
 Kakikun is written in Rust and a mischievous child of the TUI (Text User Interface) library ![cursive](https://github.com/gyscos/cursive). Another star of the show is the Rust image processing library. Thanks lots! 
