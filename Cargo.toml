@@ -21,5 +21,4 @@ version = "0.20"
 default-features = false
 
 [features]
-default = ["cursive/termion-backend"]
-windows = ["cursive/crossterm-backend"]
+default = ["cursive/crossterm-backend"]
