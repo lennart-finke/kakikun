@@ -7,7 +7,7 @@ use cursive::event::{Event, EventResult, MouseButton, MouseEvent};
 use cursive::theme::{Color, ColorStyle};
 use cursive::Printer;
 use cursive::Vec2;
-
+use cursive::view::CannotFocus;
 
 // The big weak point of my implementation is the following.
 // These should be properties of a View, but I don't know how to access them from inside the event handler of different objects.
@@ -451,8 +451,8 @@ impl cursive::view::View for CanvasView {
         }
     }
 
-    fn take_focus(&mut self, _: Direction) -> bool {
-        true
+    fn take_focus(&mut self, _: Direction) -> Result<EventResult, CannotFocus> {
+        Ok(EventResult::Consumed(None))
     }
 
     fn on_event(&mut self, event: Event) -> EventResult {
@@ -574,8 +574,8 @@ impl cursive::view::View for PickView {
         }
     }
 
-    fn take_focus(&mut self, _: Direction) -> bool {
-        true
+    fn take_focus(&mut self, _: Direction) -> Result<EventResult, CannotFocus> {
+        Ok(EventResult::Consumed(None))
     }
 
     fn on_event(&mut self, event: Event) -> EventResult {

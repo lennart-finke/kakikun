@@ -13,7 +13,6 @@ use cursive::views::{Button, Dialog, LinearLayout, Panel, EditView, ListView, Te
 use cursive::theme::{BorderStyle, Color, Theme, Palette, PaletteColor::*};
 use cursive::traits::*;
 use cursive::event::Event;
-use cursive::traits::Identifiable;
 use cursive::Cursive;
 use cursive::Vec2;
 use cursive::backends;

@@ -12,12 +12,12 @@ categories = ["command-line-utilities", "multimedia::images", "graphics"]
 
 
 [dependencies]
-cursive_buffered_backend = { git = "https://github.com/gyscos/cursive_buffered_backend" }
+cursive_buffered_backend = "0.6.1"
 image = "0.23.12"
 regex = "1"
 
 [dependencies.cursive]
-version = "0.16"
+version = "0.20"
 default-features = false
 
 [features]
