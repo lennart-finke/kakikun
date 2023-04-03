@@ -20,12 +20,6 @@ cd kakikun
 cargo run --release
 ```
 
-and on Windows:
-```bash
-git clone https://github.com/file-acomplaint/kakikun.git
-cd kakikun
-cargo run --release --no-default-features --features windows
-```
 And then you can move target/release/kakikun where you want. If you'd like some other installation medium, tell me and I'll do my best :)
 
 ## Heritage
